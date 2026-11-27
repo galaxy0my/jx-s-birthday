@@ -443,51 +443,67 @@ function enterGalaxy() {
    事件绑定
    ============================================ */
 function bindFinaleEvents() {
-  document.getElementById('btn-galaxy').onclick = enterGalaxy;
-
-  /* 蜡烛点击许愿 */
-  var candle = document.querySelector('.candle');
-  var cake = document.querySelector('.flower-cake');
-  if (candle && cake) {
-    candle.onclick = function () {
-      if (cake.classList.contains('blowed')) return;
-      cake.classList.add('blowed');
-      var tip = document.querySelector('.blow');
-      if (tip) tip.textContent = '愿望已送达 🌸';
-      var mfs = cake.querySelectorAll('.mini-flower');
-      for (var i = 0; i < mfs.length; i++) {
-        mfs[i].style.setProperty('--sx', ((Math.random() - .5) * 120) + 'px');
-      }
-      var r = cake.getBoundingClientRect();
-      if (window.Fireworks) Fireworks.burst(r.left + r.width / 2, r.top + r.height / 3);
-      setTimeout(function () {
-        cake.classList.remove('blowed');
-        if (tip) tip.textContent = '点一下蜡烛，许个愿';
-      }, 3000);
-    };
+  /* 工具函数：安全绑定 */
+  function on(id, fn) {
+    var el = document.getElementById(id);
+    if (el) { el.onclick = fn; }
+    else { console.warn('元素不存在: #' + id); }
+  }
+  function onQ(sel, fn) {
+    var el = document.querySelector(sel);
+    if (el) { el.onclick = fn; }
+    else { console.warn('元素不存在: ' + sel); }
   }
 
+  /* 进入花海 */
+  on('btn-galaxy', enterGalaxy);
+
+  /* 蜡烛点击许愿 */
+  onQ('.candle', function () {
+    var cake = document.querySelector('.flower-cake');
+    if (!cake || cake.classList.contains('blowed')) return;
+    cake.classList.add('blowed');
+    var tip = document.querySelector('.blow');
+    if (tip) tip.textContent = '愿望已送达 🌸';
+    var mfs = cake.querySelectorAll('.mini-flower');
+    for (var i = 0; i < mfs.length; i++) {
+      mfs[i].style.setProperty('--sx', ((Math.random() - .5) * 120) + 'px');
+    }
+    if (window.Fireworks) {
+      var r = cake.getBoundingClientRect();
+      Fireworks.burst(r.left + r.width / 2, r.top + r.height / 3);
+    }
+    setTimeout(function () {
+      cake.classList.remove('blowed');
+      if (tip) tip.textContent = '点一下蜡烛，许个愿';
+    }, 3000);
+  });
+
   /* 信件一 */
-  document.getElementById('btn-letter').onclick = function () {
-    document.getElementById('letter-mask').classList.remove('hd');
-  };
-  document.querySelector('#letter-mask .close').onclick = function () {
-    document.getElementById('letter-mask').classList.add('hd');
-  };
-  document.getElementById('letter-mask').onclick = function (e) {
+  on('btn-letter', function () {
+    var m = document.getElementById('letter-mask');
+    if (m) m.classList.remove('hd');
+  });
+  onQ('#letter-mask .close', function () {
+    var m = document.getElementById('letter-mask');
+    if (m) m.classList.add('hd');
+  });
+  on('letter-mask', function (e) {
     if (e.target === this) this.classList.add('hd');
-  };
+  });
 
   /* 信件二 */
-  document.getElementById('btn-letter2').onclick = function () {
-    document.getElementById('letter-mask2').classList.remove('hd');
-  };
-  document.querySelector('#letter-mask2 .close').onclick = function () {
-    document.getElementById('letter-mask2').classList.add('hd');
-  };
-  document.getElementById('letter-mask2').onclick = function (e) {
+  on('btn-letter2', function () {
+    var m = document.getElementById('letter-mask2');
+    if (m) m.classList.remove('hd');
+  });
+  onQ('#letter-mask2 .close', function () {
+    var m = document.getElementById('letter-mask2');
+    if (m) m.classList.add('hd');
+  });
+  on('letter-mask2', function (e) {
     if (e.target === this) this.classList.add('hd');
-  };
+  });
 
   /* 特效切换 */
   var btns = document.querySelectorAll('.fx-btn');
@@ -495,7 +511,8 @@ function bindFinaleEvents() {
     btns[i].onclick = function () {
       for (var j = 0; j < btns.length; j++) btns[j].classList.remove('on');
       this.classList.add('on');
-      Galaxy.setMode(this.getAttribute('data-fx'));
+      if (window.Galaxy) Galaxy.setMode(this.getAttribute('data-fx'));
     };
   }
 }
+
