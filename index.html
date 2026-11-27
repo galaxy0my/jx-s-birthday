@@ -445,6 +445,19 @@ button:hover{box-shadow:0 6px 20px rgba(46,160,67,.35)}
   <div class="h">&gt; AUDIT_WORKPAPER :: 高级逻辑复核</div>
   <div id="stage"></div>
 </div>
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+  var s = document.getElementById('stage');
+  var msg = 'stage存在: ' + !!s + '<br>';
+  msg += 'stage内容长度: ' + (s ? s.innerHTML.length : '无') + '<br>';
+  msg += 'renderPuzzle类型: ' + typeof renderPuzzle + '<br>';
+  msg += 'QS类型: ' + typeof QS + '<br>';
+  var d = document.createElement('div');
+  d.style.cssText='position:fixed;top:0;left:0;right:0;z-index:99999;background:#000;color:#0f0;padding:10px;font-size:12px;font-family:monospace';
+  d.innerHTML = msg;
+  document.body.appendChild(d);
+});
+</script>
 
 <script src="puzzle.js"></script>
 <script src="finale.js"></script>
@@ -531,15 +544,15 @@ function startConfetti(){
     fx.appendChild(c);
   }
 }
-
 /* ===== 启动 ===== */
 document.addEventListener('DOMContentLoaded',function(){
   if(typeof renderPuzzle === 'function'){
-    renderPuzzle(1);
+    renderPuzzle(0);
   }else{
-    window.onerror('puzzle.js 未加载成功');
+    console.error('puzzle.js 未加载成功');
   }
 });
+
 </script>
 </body>
 </html>
