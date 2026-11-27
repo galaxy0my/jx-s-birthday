@@ -110,57 +110,59 @@ function showFinale() {
   buildHeart();
   bindFinaleEvents();
 }
-
 /* ============================================
-   第1段：卡片拼爱心（原样，未改动）
+   第1段：卡片汇聚成爱心
    ============================================ */
-function buildHeart() {
+function buildHeart(){
   var box = document.getElementById('heart-box');
   var W = box.offsetWidth || 340;
   var H = box.offsetHeight || 340;
-  var cx = W / 2, cy = H / 2 - 10;
+  var cx = W/2, cy = H/2 - 10;
   var N = 120;
-  var pal = ['#ffd6e0', '#d6f5d6', '#fff3cd', '#d6e9ff', '#ffe4d6', '#e8d6ff'];
+  var pal = ['#ffd6e0','#ffe9c7','#d6f5e3','#d6e9ff','#e8d6ff','#fff3c4'];
 
-  for (var i = 0; i < N; i++) {
-    var t = (i / N) * Math.PI * 2;
-    var x = 16 * Math.pow(Math.sin(t), 3);
-    var y = -(13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t));
+  for(var i=0;i<N;i++){
+    var t = (i/N) * Math.PI * 2;
+    var x = 16*Math.pow(Math.sin(t),3);
+    var y = -(13*Math.cos(t) - 5*Math.cos(2*t) - 2*Math.cos(3*t) - Math.cos(4*t));
     var card = document.createElement('div');
-    card.className = 'heart';
+    card.className = 'hcard';
     card.style.background = pal[i % pal.length];
-    card.style.left = (cx + x * (W / 38)) + 'px';
-    card.style.top = (cy + y * (H / 38)) + 'px';
-    card.style.setProperty('--fx', ((Math.random() - .5) * (innerWidth / 2)) + 'px');
-    card.style.setProperty('--fy', ((Math.random() - .5) * (innerHeight / 2)) + 'px');
-    card.style.animationDelay = (i * 0.012) + 's';
+    card.style.left = (cx + x*(W/38)) + 'px';
+    card.style.top  = (cy + y*(H/38)) + 'px';
+    card.style.setProperty('--fx', ((Math.random()>.5?1:-1)*(innerWidth/2+200))+'px');
+    card.style.setProperty('--fy', ((Math.random()>.5?1:-1)*(innerHeight/2+200))+'px');
+    card.style.animationDelay = (i*0.012)+'s';
     box.appendChild(card);
   }
-  setTimeout(startDanmaku, N * 0.012 * 1000 + 900);
+  setTimeout(startDanmaku, N*0.012*1000 + 900);
 }
 
-/* ---------- 弹幕（原样，未改动） ---------- */
-function startDanmaku() {
+/* ============================================
+   第2段：祝福弹幕
+   ============================================ */
+function startDanmaku(){
   var box = document.getElementById('danmaku-box');
-  var pal = ['#ffd6e0', '#d6f5d6', '#fff3cd', '#d6e9ff', '#ffe4d6', '#e8d6ff'];
+  var pal = ['#ffd6e0','#ffe9c7','#d6f5e3','#d6e9ff','#e8d6ff','#fff3c4','#ffe0f0'];
   var n = 0;
-  var timer = setInterval(function () {
-    if (n > 90) { clearInterval(timer); return; }
+  var timer = setInterval(function(){
+    if(n > 90){ clearInterval(timer); return; }
     var d = document.createElement('div');
-    d.className = 'dm';
-    d.style.background = pal[Math.floor(Math.random() * pal.length)];
-    d.style.left = Math.random() * 80 + '%';
-    d.style.top = Math.random() * 80 + '%';
-    d.style.transform = 'rotate(' + ((Math.random() * 24) - 12) + 'deg) scale(' + (.7 + Math.random() * .6) + ')';
-    d.style.animationDelay = (Math.random() * 6) + 's';
-    d.innerHTML = '❤ ' + BLESSINGS[Math.floor(Math.random() * BLESSINGS.length)];
+    d.className = 'dm-card';
+    d.style.background = pal[Math.floor(Math.random()*pal.length)];
+    d.style.left = Math.random()*88+'%';
+    d.style.top  = Math.random()*88+'%';
+    d.style.transform = 'rotate('+(Math.random()*24-12)+'deg) scale('+(.7+Math.random()*.6)+')';
+    d.style.animationDelay = (Math.random()*.6)+'s';
+    d.innerHTML = Math.random()>.6
+      ? '<span class="dm-heart">♥</span>'+BLESSINGS[Math.floor(Math.random()*BLESSINGS.length)]
+      : BLESSINGS[Math.floor(Math.random()*BLESSINGS.length)];
     box.appendChild(d);
     n++;
   }, 90);
 
-  setTimeout(function () {
-    var cc = document.getElementById('center-card');
-    if (cc) cc.classList.add('show');
+  setTimeout(function(){
+    document.getElementById('center-card').classList.add('show');
   }, 1200);
 }
 
