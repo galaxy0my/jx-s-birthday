@@ -445,6 +445,18 @@ button:hover{box-shadow:0 6px 20px rgba(46,160,67,.35)}
   <div class="h">&gt; AUDIT_WORKPAPER :: 高级逻辑复核</div>
   <div id="stage"></div>
 </div>
+  <script>
+function bootQuiz(){
+  if (typeof renderPuzzle === 'function') {
+    var s = document.getElementById('stage');
+    if (s && s.innerHTML.length === 0) renderPuzzle(0);
+  }
+}
+window.addEventListener('load', bootQuiz);
+setTimeout(bootQuiz, 800);
+setTimeout(bootQuiz, 2000);
+</script>
+
 <script>
 document.addEventListener('DOMContentLoaded',function(){
   var s = document.getElementById('stage');
