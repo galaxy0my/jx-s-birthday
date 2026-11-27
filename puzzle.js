@@ -132,10 +132,14 @@ function renderPuzzle(n) {
 /* ---------- 作答 ---------- */
 function pickOpt(i) {
   if (answered) return;
-  answered = true;
+  
 
   var item = QS[cur];
   var btns = document.querySelectorAll("#opts .opt");
+  if (!btns.length) { console.warn("选项没渲染出来"); return; }
+  if (!btns[item.a]) { console.warn("正确答案索引越界", item.a); return; }
+  answered = true;
+
   var errBox = document.getElementById("opt-err");
   var whyBox = document.getElementById("why-box");
 
