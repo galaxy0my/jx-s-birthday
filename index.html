@@ -242,12 +242,12 @@ button:hover{box-shadow:0 6px 20px rgba(46,160,67,.35)}
   .ring.r2{width:230px;height:230px}
 }
 /* ============ 花饰蛋糕 ============ */
-.flower-cake{position:relative}
+.cake .tier{position:relative}
 
 /* 蜡烛火焰 → 花瓣形 */
-.petal-flame{
+.cake.flower-cake .flame{
   border-radius:50% 50% 50% 0 !important;
-  transform:rotate(-45deg);
+  transform:rotate(-45deg) !important;
   background:linear-gradient(135deg,#ffd6e0,#ff8fab) !important;
   box-shadow:0 0 18px rgba(255,143,171,.9) !important;
 }
@@ -260,6 +260,7 @@ button:hover{box-shadow:0 6px 20px rgba(46,160,67,.35)}
   background:radial-gradient(circle,#fff3b0 20%,#ff8fab 60%,#ff5d8f 100%);
   box-shadow:0 0 8px rgba(255,143,171,.7);
   animation:mfBloom 1s ease-out backwards;
+  z-index:5;
 }
 .mini-flower::before,
 .mini-flower::after{
@@ -274,14 +275,11 @@ button:hover{box-shadow:0 6px 20px rgba(46,160,67,.35)}
   70%{transform:scale(1.3)}
   100%{transform:scale(1);opacity:1}
 }
-
-/* 顶层三朵小花 */
-.t1 .mf1{left:14px;bottom:100%;animation-delay:.3s}
-.t1 .mf2{left:50%;margin-left:-8px;bottom:100%;animation-delay:.45s}
-.t1 .mf3{right:14px;bottom:100%;animation-delay:.6s}
-/* 底层两朵小花 */
-.t3 .mf4{left:22px;bottom:70%;animation-delay:.75s}
-.t3 .mf5{right:22px;bottom:70%;animation-delay:.9s}
+.cake.flower-cake .t1 .mf1{left:14px;bottom:100%;animation-delay:.3s}
+.cake.flower-cake .t1 .mf2{left:50%;margin-left:-8px;bottom:100%;animation-delay:.45s}
+.cake.flower-cake .t1 .mf3{right:14px;bottom:100%;animation-delay:.6s}
+.cake.flower-cake .t3 .mf4{left:22px;bottom:70%;animation-delay:.75s}
+.cake.flower-cake .t3 .mf5{right:22px;bottom:70%;animation-delay:.9s}
 
 /* 绿叶 */
 .leaf{
@@ -290,11 +288,12 @@ button:hover{box-shadow:0 6px 20px rgba(46,160,67,.35)}
   background:linear-gradient(90deg,#8fd694,#5fa865);
   border-radius:0 100% 0 100%;
   opacity:.9;
+  z-index:4;
 }
-.t1 .lf1{left:34px;bottom:100%;transform:rotate(-25deg)}
-.t1 .lf2{right:34px;bottom:100%;transform:rotate(25deg) scaleX(-1)}
-.t3 .lf3{left:42px;bottom:70%;transform:rotate(-20deg)}
-.t3 .lf4{right:42px;bottom:70%;transform:rotate(20deg) scaleX(-1)}
+.cake.flower-cake .t1 .lf1{left:34px;bottom:100%;transform:rotate(-25deg)}
+.cake.flower-cake .t1 .lf2{right:34px;bottom:100%;transform:rotate(25deg) scaleX(-1)}
+.cake.flower-cake .t3 .lf3{left:42px;bottom:70%;transform:rotate(-20deg)}
+.cake.flower-cake .t3 .lf4{right:42px;bottom:70%;transform:rotate(20deg) scaleX(-1)}
 
 /* 中层花瓣边 */
 .petal-edge{
@@ -306,15 +305,24 @@ button:hover{box-shadow:0 6px 20px rgba(46,160,67,.35)}
   border-radius:50% 50% 40% 40%;
   transform-origin:50% 100%;
   animation:edgeUp .6s ease-out backwards;
+  z-index:4;
 }
-.t2 .e1{left:8%}  .t2 .e2{left:20%}
-.t2 .e3{left:32%} .t2 .e4{left:44%}
-.t2 .e5{left:56%} .t2 .e6{left:68%}
-.t2 .e7{left:80%} .t2 .e8{left:92%}
-.t2 .e1{animation-delay:.15s} .t2 .e2{animation-delay:.22s}
-.t2 .e3{animation-delay:.29s} .t2 .e4{animation-delay:.36s}
-.t2 .e5{animation-delay:.43s} .t2 .e6{animation-delay:.50s}
-.t2 .e7{animation-delay:.57s} .t2 .e8{animation-delay:.64s}
+.cake.flower-cake .t2 .e1{left:8%}
+.cake.flower-cake .t2 .e2{left:20%}
+.cake.flower-cake .t2 .e3{left:32%}
+.cake.flower-cake .t2 .e4{left:44%}
+.cake.flower-cake .t2 .e5{left:56%}
+.cake.flower-cake .t2 .e6{left:68%}
+.cake.flower-cake .t2 .e7{left:80%}
+.cake.flower-cake .t2 .e8{left:92%}
+.cake.flower-cake .t2 .e1{animation-delay:.15s}
+.cake.flower-cake .t2 .e2{animation-delay:.22s}
+.cake.flower-cake .t2 .e3{animation-delay:.29s}
+.cake.flower-cake .t2 .e4{animation-delay:.36s}
+.cake.flower-cake .t2 .e5{animation-delay:.43s}
+.cake.flower-cake .t2 .e6{animation-delay:.50s}
+.cake.flower-cake .t2 .e7{animation-delay:.57s}
+.cake.flower-cake .t2 .e8{animation-delay:.64s}
 @keyframes edgeUp{
   0%{transform:scaleY(0);opacity:0}
   100%{transform:scaleY(1);opacity:1}
@@ -331,16 +339,16 @@ button:hover{box-shadow:0 6px 20px rgba(46,160,67,.35)}
 }
 
 /* 蛋糕配色 → 粉色系 */
-.flower-cake .t1{background:linear-gradient(180deg,#fff0f5,#ffd9e6) !important}
-.flower-cake .t2{background:linear-gradient(180deg,#ffe4ec,#ffc2d4) !important}
-.flower-cake .t3{background:linear-gradient(180deg,#ffd6e0,#ffb3c6) !important}
-.flower-cake .cherry{
+.cake.flower-cake .t1{background:linear-gradient(180deg,#fff0f5,#ffd9e6) !important}
+.cake.flower-cake .t2{background:linear-gradient(180deg,#ffe4ec,#ffc2d4) !important}
+.cake.flower-cake .t3{background:linear-gradient(180deg,#ffd6e0,#ffb3c6) !important}
+.cake.flower-cake .cherry{
   background:radial-gradient(circle at 30% 30%,#fff3b0,#ffd166) !important;
   box-shadow:0 0 12px rgba(255,209,102,.9) !important;
 }
 
 /* 点击许愿动画 */
-.flower-cake.blowed .petal-flame{animation:flameOut .5s ease-out forwards}
+.flower-cake.blowed .flame{animation:flameOut .5s ease-out forwards}
 @keyframes flameOut{
   0%{opacity:1;transform:rotate(-45deg) scale(1)}
   100%{opacity:0;transform:rotate(-45deg) scale(0) translateY(-30px)}
@@ -356,6 +364,66 @@ button:hover{box-shadow:0 6px 20px rgba(46,160,67,.35)}
   100%{transform:translateY(60px) rotate(90deg);opacity:0}
 }
 
+/* ============ 信件（z-index 提到最高） ============ */
+.letter-mask{
+  position:fixed !important;
+  inset:0 !important;
+  z-index:9999 !important;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(20,10,25,.75);
+  backdrop-filter:blur(6px);
+  padding:20px;
+}
+.letter-mask.hd{display:none !important}
+.letter{
+  position:relative;
+  z-index:10000;
+  width:min(90%,420px);
+  max-height:80vh;
+  overflow-y:auto;
+  padding:32px 28px;
+  border-radius:18px;
+  background:linear-gradient(160deg,#fff8f0,#ffeef5);
+  box-shadow:0 20px 60px rgba(0,0,0,.4);
+  animation:letterIn .4s ease-out;
+}
+@keyframes letterIn{
+  0%{transform:translateY(40px) scale(.9);opacity:0}
+  100%{transform:translateY(0) scale(1);opacity:1}
+}
+.letter .close{
+  position:absolute;
+  top:12px;right:16px;
+  width:32px;height:32px;
+  border:none;
+  border-radius:50%;
+  background:rgba(0,0,0,.08);
+  font-size:20px;
+  color:#8a6a73;
+  cursor:pointer;
+  line-height:1;
+}
+.letter .close:hover{background:rgba(0,0,0,.15)}
+.letter h3{
+  margin:0 0 16px;
+  font-size:22px;
+  color:#d1607e;
+}
+.letter p{
+  margin:0 0 12px;
+  line-height:1.9;
+  font-size:15px;
+  color:#6b5560;
+}
+.letter .sign{
+  margin-top:20px;
+  text-align:right;
+  font-size:14px;
+  color:#a88a93;
+  font-style:italic;
+}
 
 </style>
 
