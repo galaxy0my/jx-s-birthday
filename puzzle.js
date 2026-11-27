@@ -119,8 +119,10 @@ function renderPuzzle(n) {
   html += '</div>';
   html += '<div class="err" id="opt-err"></div>';
   html += '<div class="cb" id="why-box" style="display:none"></div>';
-  html += '<div style="margin-top:18px;font-size:.78em;color:#8b949e;letter-spacing:1px">'
-        + 'SCORE: <span id="sc">' + score + '</span> / ' + QS.length
+  html += '<div style="margin-top:18px;font-size:.78em;color:#8b949e;letter-spacing:.1em">'          + 'SCORE: <span id="sc">' + score + '</span> / ' + QS.length
+       + ' &nbsp;&nbsp; PROGRESS: ' + pct + '%'
+       + '</div>';
+
         + ' &nbsp;|&nbsp; PROGRESS: ' + pct + '%'
         + '</div>';
   html += '<div style="height:4px;border-radius:2px;background:rgba(255,255,255,.08);margin-top:8px;overflow:hidden">'
