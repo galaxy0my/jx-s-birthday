@@ -111,10 +111,11 @@ function renderPuzzle(n) {
   html += '<div class="lv-tag">' + item.lv + '</div>';
   html += '<div class="q"><b>' + item.q + '</b></div>';
   html += '<div id="opts">';
-  for (var i = 0; i < item.o.length; i++) {
-    html += '<button class="opt" data-i="' + i + '" onclick="pickOpt(' + i + ')">'
-          + item.o[i] + '</button>';
-  }
+      for (var i = 0; i < item.o.length; i++) {
+      html += '<button class="opt" data-i="' + i + '" onclick="pickOpt(' + 
+              + item.o[i] + '</button>';
+    }
+
   html += '</div>';
   html += '<div class="err" id="opt-err"></div>';
   html += '<div class="cb" id="why-box" style="display:none"></div>';
