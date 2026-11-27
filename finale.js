@@ -23,7 +23,7 @@ function showFinale(){
       '<div id="center-card" class="center-card">'+
         '<h1>生日快乐 <span class="heart-ico">♥</span></h1>'+
         '<p>小寿星祝你天天开心，永远幸福</p>'+
-        '<button id="btn-galaxy">请小林公主进入星河漫游 →</button>'+
+        '<button id="btn-galaxy">请陈殿下进入星河漫游 →</button>'+
       '</div>'+
     '</div>'+
 
