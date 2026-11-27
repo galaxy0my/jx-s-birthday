@@ -218,29 +218,33 @@ button:hover{box-shadow:0 6px 20px rgba(46,160,67,.35)}
   font-weight:normal;letter-spacing:1px;backdrop-filter:blur(6px)}
 .fx-btn.on{background:rgba(255,209,102,.22);border-color:rgba(255,209,102,.6);color:#ffd166}
 
-/* 第4段：信件 */
-.letter-mask{position:fixed;inset:0;z-index:50;display:flex;align-items:center;
-  justify-content:center;background:rgba(5,8,16,.72);backdrop-filter:blur(6px);animation:fade .4s ease}
+/* 第4段：信件（粉色信纸） */
+.letter-mask{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;
+  justify-content:center;background:rgba(60,20,35,.6);backdrop-filter:blur(8px);animation:fade .4s ease}
 @keyframes fade{0%{opacity:0}100%{opacity:1}}
 .letter{position:relative;width:min(90%,460px);max-height:78vh;overflow-y:auto;
-  padding:30px 28px;border-radius:14px;
-  background:linear-gradient(160deg,#1a2035,#141828);
-  border:1px solid rgba(255,255,255,.12);box-shadow:0 24px 70px rgba(0,0,0,.7);
+  padding:34px 30px 28px;border-radius:16px;
+  background:linear-gradient(160deg,#fff8f5,#ffeef2 55%,#ffe4ec);
+  border:1px solid rgba(255,182,193,.55);
+  box-shadow:0 24px 70px rgba(120,40,70,.35),inset 0 1px 0 rgba(255,255,255,.9);
   animation:letterIn .5s cubic-bezier(.2,.9,.3,1.2)}
 @keyframes letterIn{0%{opacity:0;transform:translateY(24px) scale(.94)}100%{opacity:1;transform:none}}
-.letter .close{position:absolute;right:14px;top:12px;width:30px;height:30px;margin:0;
-  padding:0;background:transparent;border:none;color:#8b949e;font-size:1.5em;line-height:1}
-.letter h3{margin:0 0 18px;color:#e6edf3;font-size:1.1em}
-.letter p{margin:0 0 14px;line-height:1.95;color:#c9d1d9;font-size:.94em;text-indent:2em}
-.letter .sign{margin-top:24px;text-align:right;color:#8b949e;font-size:.9em}
+.letter::before{content:'';position:absolute;left:0;right:0;top:0;height:5px;
+  border-radius:16px 16px 0 0;
+  background:linear-gradient(90deg,#ff9ebb,#ffc2d1,#ff8fab)}
+.letter .close{position:absolute;right:14px;top:14px;width:32px;height:32px;margin:0;
+  padding:0;background:rgba(255,143,171,.14);border:none;border-radius:50%;
+  color:#c96a86;font-size:1.5em;line-height:1;cursor:pointer;transition:.25s}
+.letter .close:hover{background:rgba(255,143,171,.3);transform:rotate(90deg)}
+.letter h3{margin:0 0 18px;color:#d1607e;font-size:1.2em;letter-spacing:.06em}
+.letter h3::after{content:'';display:block;width:46px;height:2px;margin-top:10px;
+  border-radius:2px;background:linear-gradient(90deg,#ff8fab,transparent)}
+.letter p{margin:0 0 14px;line-height:2;color:#7a5a63;font-size:.95em;text-indent:2em}
+.letter .sign{margin-top:24px;text-align:right;color:#b08a95;font-size:.9em;font-style:italic}
+.letter::-webkit-scrollbar{width:6px}
+.letter::-webkit-scrollbar-thumb{border-radius:6px;background:rgba(255,143,171,.45)}
+.letter::-webkit-scrollbar-track{background:transparent}
 
-@media (max-width:560px){
-  .galaxy-text{max-width:100%;left:5%;top:5%}
-  .galaxy-text h1{font-size:1.7em}
-  .cake-stage{right:50%;transform:translateX(50%);bottom:14%}
-  .ring.r1{width:180px;height:180px}
-  .ring.r2{width:230px;height:230px}
-}
 /* ============ 花饰蛋糕 ============ */
 .cake .tier{position:relative}
 
