@@ -25,7 +25,7 @@ function showFinale() {
     '<div id="scene-heart" class="scene">' +
       '<div id="heart-box"></div>' +
       '<div id="danmaku-box"></div>' +
-      '<div class="center-card">' +
+      '<div class="center-card" id="center-card">' +
         '<h1>🌸 生日快乐 🌸</h1>' +
         '<p>每片花瓣都是祝福，随风飘向你</p>' +
         '<button id="btn-galaxy">走进花海 →</button>' +
@@ -43,9 +43,10 @@ function showFinale() {
         '<button id="btn-letter2">再读一封</button>' +
       '</div>' +
     '</div>' +
+
+    /* 花束 */
     '<div class="cake-stage">' +
       '<div class="cake bouquet">' +
-        /* 花头：中心一朵 + 周围六朵 */
         '<div class="bunch">' +
           '<div class="flower f1"><i class="petal p1"></i><i class="petal p2"></i><i class="petal p3"></i><i class="petal p4"></i><i class="core"></i></div>' +
           '<div class="flower f2"><i class="petal p1"></i><i class="petal p2"></i><i class="petal p3"></i><i class="petal p4"></i><i class="core"></i></div>' +
@@ -55,12 +56,9 @@ function showFinale() {
           '<div class="flower f6"><i class="petal p1"></i><i class="petal p2"></i><i class="petal p3"></i><i class="petal p4"></i><i class="core"></i></div>' +
           '<div class="flower f0"><i class="petal p1"></i><i class="petal p2"></i><i class="petal p3"></i><i class="petal p4"></i><i class="core"></i></div>' +
         '</div>' +
-        /* 花茎 */
         '<div class="stems"><i></i><i></i><i></i><i></i><i></i></div>' +
-        /* 包装纸 */
         '<div class="wrap w1"></div>' +
         '<div class="wrap w2"></div>' +
-        /* 蝴蝶结 */
         '<div class="bow"><i class="l"></i><i class="r"></i><i class="knot"></i></div>' +
       '</div>' +
       '<div class="ring r1"></div>' +
@@ -69,7 +67,7 @@ function showFinale() {
       '<div class="blow">点一下花束，许个愿</div>' +
     '</div>' +
 
-
+    /* 四种特效切换 */
     '<div class="fx-bar">' +
       '<button class="fx-btn on" data-fx="petal">🌸 落英纷飞</button>' +
       '<button class="fx-btn" data-fx="butterfly">🦋 蝶舞花间</button>' +
@@ -157,7 +155,8 @@ function startDanmaku() {
   }, 90);
 
   setTimeout(function () {
-    document.getElementById('center-card').classList.add('show');
+    var cc = document.getElementById('center-card');
+    if (cc) cc.classList.add('show');
   }, 1200);
 }
 
@@ -166,36 +165,50 @@ function startDanmaku() {
    ============================================ */
 var Galaxy = (function () {
   var cv, ctx, W, H, raf;
-  var stars = [], bokeh = [], snow = [], halos = [];
+  var stars = [], bokeh = [], snow = [], halos = [], meteors = [];
   var BC = ['#ff9a9e', '#fecfef', '#fbc2eb', '#a6c1ee', '#fdcbf1', '#ffb7c5'];
-  var mode = '';
+  var mode = 'petal';
 
   function init() {
     cv = document.getElementById('galaxy-cv');
+    if (!cv) return;
     ctx = cv.getContext('2d');
     resize();
     addEventListener('resize', resize);
 
-    stars = []; bokeh = []; snow = []; halos = [];
+    stars = []; bokeh = []; snow = []; halos = []; meteors = [];
 
-    /* 花瓣 */
+    /* 微光花蕊（背景点缀） */
+    for (var i = 0; i < 60; i++) {
+      stars.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        r: .4 + Math.random() * 1.2,
+        a: .2 + Math.random() * .6,
+        d: (Math.random() > .5 ? 1 : -1) * (.004 + Math.random() * .01)
+      });
+    }
+
+    /* 🌸 落英纷飞：旋转花瓣 */
     for (var j = 0; j < 26; j++) {
       bokeh.push({
         x: Math.random() * W,
         y: Math.random() * H,
-        r: 1 + Math.random() * 3,
-        a: .1 + Math.random() * .3,
-        vx: (Math.random() - .5) * .25,
-        vy: .2 + Math.random() * .5,
+        r: 6 + Math.random() * 10,
+        a: .35 + Math.random() * .45,
+        vx: (Math.random() - .5) * .6,
+        vy: .4 + Math.random() * .9,
         rot: Math.random() * 6.28,
-        vr: (Math.random() - .5) * .02
+        vr: (Math.random() - .5) * .03
       });
     }
-    /* 蝴蝶 */
-    for (var k = 0; k < 14; k++) {
-      snow.push(newSnow(true));
+
+    /* 🦋 蝶舞花间：蝴蝶 */
+    for (var k = 0; k < 12; k++) {
+      snow.push(newButterfly(true));
     }
-    /* 光晕 */
+
+    /* 💗 心形花海：光环 */
     for (var m = 0; m < 4; m++) {
       halos.push({
         x: Math.random() * W,
@@ -206,65 +219,147 @@ var Galaxy = (function () {
         c: BC[m % BC.length]
       });
     }
+
+    if (raf) cancelAnimationFrame(raf);
     loop();
   }
 
   function resize() {
     if (!cv) return;
-    W = cv.offsetWidth;
-    H = cv.offsetHeight;
+    W = cv.offsetWidth || innerWidth;
+    H = cv.offsetHeight || innerHeight;
     cv.width = W; cv.height = H;
   }
 
-  function newSnow(anywhere) {
+  /* 蝴蝶数据结构 */
+  function newButterfly(anywhere) {
     return {
       x: Math.random() * W,
-      y: anywhere ? Math.random() * H : -10,
-      r: 2 + Math.random() * 2.6,
-      vx: .5 + Math.random() * 1.4,
-      vy: (Math.random() - .5) * .6,
+      y: anywhere ? Math.random() * H : -20,
+      r: 7 + Math.random() * 6,
+      vx: (Math.random() - .5) * 1.2,
+      vy: .35 + Math.random() * .55,
       sw: Math.random() * 6.28,
-      ss: .01 + Math.random() * .02,
-      a: .4 + Math.random() * .5
+      ss: .06 + Math.random() * .06,   // 扇翅速度
+      a: .75 + Math.random() * .25,
+      c: BC[Math.floor(Math.random() * BC.length)],
+      wob: Math.random() * 6.28
     };
   }
 
-  /* --- 落英纷飞 --- */
+  /* --- 背景微光 --- */
   function drawStars() {
     for (var i = 0; i < stars.length; i++) {
       var s = stars[i];
-      s.a += s.d; if (s.a > 1 || s.a < .15) s.d = -s.d;
-      ctx.globalAlpha = Math.abs(s.a);
+      s.a += s.d;
+      if (s.a > 1 || s.a < .15) s.d = -s.d;
+      ctx.globalAlpha = Math.abs(s.a) * .8;
       ctx.fillStyle = '#fff';
-      ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 6.283); ctx.fill();
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, 6.283);
+      ctx.fill();
     }
+    ctx.globalAlpha = 1;
   }
 
-  /* --- 蝶舞花间（花瓣旋转飘落） --- */
+  /* --- 🌸 落英纷飞 --- */
   function drawBokeh() {
     for (var i = 0; i < bokeh.length; i++) {
       var b = bokeh[i];
       b.x += b.vx; b.y += b.vy; b.rot += b.vr;
-      if (b.y > H + 60) { b.y = -60; b.x = Math.random() * W; }
-      if (b.x > W + 60) b.x = -60;
-      if (b.x < -60) b.x = W + 60;
+      if (b.y > H + 40) { b.y = -40; b.x = Math.random() * W; }
+      if (b.x > W + 40) b.x = -40;
+      if (b.x < -40) b.x = W + 40;
 
       ctx.save();
       ctx.translate(b.x, b.y);
       ctx.rotate(b.rot);
       ctx.globalAlpha = b.a;
       ctx.fillStyle = BC[i % BC.length];
-      /* 花瓣形状 */
       ctx.beginPath();
       ctx.moveTo(0, 0);
-      ctx.quadraticCurveTo(b.r * 2, -b.r * 1.5, b.r * 3, 0);
-      ctx.quadraticCurveTo(b.r * 2, b.r * 1.5, 0, 0);
+      ctx.quadraticCurveTo(b.r, -b.r * .9, b.r * 1.6, 0);
+      ctx.quadraticCurveTo(b.r, b.r * .9, 0, 0);
       ctx.fill();
       ctx.restore();
     }
+    ctx.globalAlpha = 1;
   }
 
-  /* --- 花粉流光 --- */
+  /* --- 🦋 蝶舞花间（真·扇翅） --- */
+  function drawButterfly() {
+    for (var i = 0; i < snow.length; i++) {
+      var s = snow[i];
+      s.sw += s.ss;
+      s.wob += .02;
+      s.x += s.vx + Math.sin(s.wob) * .8;
+      s.y += s.vy;
+
+      if (s.y > H + 30 || s.x > W + 40 || s.x < -40) {
+        snow[i] = newButterfly(false);
+        continue;
+      }
+
+      /* 翅膀开合度：0~1 之间循环 */
+      var flap = Math.abs(Math.sin(s.sw));
+      var wingW = s.r * 2 * (.25 + flap * .75);
+
+      ctx.save();
+      ctx.translate(s.x, s.y);
+      ctx.globalAlpha = s.a;
+
+      /* 左翅 */
+      ctx.save();
+      ctx.scale(-1, 1);
+      var gl = ctx.createLinearGradient(0, 0, wingW, 0);
+      gl.addColorStop(0, s.c);
+      gl.addColorStop(1, 'rgba(255,255,255,.55)');
+      ctx.fillStyle = gl;
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.quadraticCurveTo(wingW * .6, -s.r * 1.5, wingW, -s.r * .5);
+      ctx.quadraticCurveTo(wingW * .8, s.r * .2, 0, s.r * .5);
+      ctx.closePath();
+      ctx.fill();
+      /* 翅斑 */
+      ctx.globalAlpha = s.a * .5;
+      ctx.fillStyle = '#fff';
+      ctx.beginPath();
+      ctx.arc(wingW * .55, -s.r * .55, s.r * .22, 0, 6.283);
+      ctx.fill();
+      ctx.restore();
+
+      /* 右翅 */
+      ctx.globalAlpha = s.a;
+      var gr = ctx.createLinearGradient(0, 0, wingW, 0);
+      gr.addColorStop(0, s.c);
+      gr.addColorStop(1, 'rgba(255,255,255,.55)');
+      ctx.fillStyle = gr;
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.quadraticCurveTo(wingW * .6, -s.r * 1.5, wingW, -s.r * .5);
+      ctx.quadraticCurveTo(wingW * .8, s.r * .2, 0, s.r * .5);
+      ctx.closePath();
+      ctx.fill();
+      ctx.globalAlpha = s.a * .5;
+      ctx.fillStyle = '#fff';
+      ctx.beginPath();
+      ctx.arc(wingW * .55, -s.r * .55, s.r * .22, 0, 6.283);
+      ctx.fill();
+
+      /* 身体 */
+      ctx.globalAlpha = s.a;
+      ctx.fillStyle = '#6b4f4f';
+      ctx.beginPath();
+      ctx.ellipse(0, 0, s.r * .16, s.r * .8, 0, 0, 6.283);
+      ctx.fill();
+
+      ctx.restore();
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  /* --- ✨ 花粉流光 --- */
   function drawMeteors(rate) {
     if (Math.random() < rate) {
       meteors.push({
@@ -277,11 +372,11 @@ var Galaxy = (function () {
     }
     for (var i = meteors.length - 1; i >= 0; i--) {
       var m = meteors[i];
-      var gr = ctx.createLinearGradient(m.x, m.y, m.x + m.len, m.y + m.len * .6);
-      gr.addColorStop(0, 'rgba(255,215,230,.95)');
-      gr.addColorStop(1, 'transparent');
+      var g = ctx.createLinearGradient(m.x, m.y, m.x + m.len, m.y + m.len * .6);
+      g.addColorStop(0, 'rgba(255,215,230,.95)');
+      g.addColorStop(1, 'transparent');
       ctx.globalAlpha = m.a;
-      ctx.strokeStyle = gr;
+      ctx.strokeStyle = g;
       ctx.lineWidth = 1.8;
       ctx.beginPath();
       ctx.moveTo(m.x, m.y);
@@ -290,35 +385,10 @@ var Galaxy = (function () {
       m.x += m.sp; m.y += m.sp * .6; m.a -= .012;
       if (m.a < 0 || m.x > W) meteors.splice(i, 1);
     }
-  }
-  var meteors = [];
-
-  /* --- 心形花海 --- */
-  function drawSnow() {
-    for (var i = 0; i < snow.length; i++) {
-      var s = snow[i];
-      s.sw += s.ss;
-      s.x += s.vx;
-      s.y += s.vy + Math.sin(s.sw) * .5;
-      s.y += s.vy;
-      if (s.y > H + 10) { snow[i] = newSnow(false); continue; }
-      if (s.x > W + 10) s.x = -10;
-      if (s.x < -10) s.x = W + 10;
-
-      ctx.globalAlpha = s.a;
-      ctx.fillStyle = '#ff9a9e';
-      ctx.beginPath();
-      /* 小爱心 */
-      var r = s.r;
-      ctx.moveTo(s.x, s.y + r * .3);
-      ctx.bezierCurveTo(s.x, s.y, s.x - r, s.y, s.x - r, s.y + r * .3);
-      ctx.bezierCurveTo(s.x - r, s.y + r * .7, s.x, s.y + r, s.x, s.y + r * 1.3);
-      ctx.bezierCurveTo(s.x, s.y + r, s.x + r, s.y + r * .7, s.x + r, s.y + r * .3);
-      ctx.bezierCurveTo(s.x + r, s.y, s.x, s.y, s.x, s.y + r * .3);
-      ctx.fill();
-    }
+    ctx.globalAlpha = 1;
   }
 
+  /* --- 💗 心形花海 --- */
   function drawHalo() {
     var cx = W / 2, cy = H / 2;
     for (var i = 0; i < halos.length; i++) {
@@ -328,12 +398,12 @@ var Galaxy = (function () {
       ctx.translate(cx, cy);
       ctx.rotate(h.rot);
       ctx.scale(1, .32);
-      var gr = ctx.createRadialGradient(0, 0, h.r * .75, 0, 0, h.r);
-      gr.addColorStop(0, 'transparent');
-      gr.addColorStop(.7, h.c);
-      gr.addColorStop(1, 'transparent');
+      var g = ctx.createRadialGradient(0, 0, h.r * .75, 0, 0, h.r);
+      g.addColorStop(0, 'transparent');
+      g.addColorStop(.7, h.c);
+      g.addColorStop(1, 'transparent');
       ctx.globalAlpha = .5;
-      ctx.fillStyle = gr;
+      ctx.fillStyle = g;
       ctx.beginPath(); ctx.arc(0, 0, h.r, 0, 6.283); ctx.fill();
       ctx.globalAlpha = .15;
       ctx.strokeStyle = '#fff';
@@ -348,13 +418,36 @@ var Galaxy = (function () {
     ctx.globalAlpha = 1;
     ctx.fillStyle = core;
     ctx.beginPath(); ctx.arc(cx, cy, 90, 0, 6.283); ctx.fill();
+
+    /* 飘浮小爱心 */
+    for (var k = 0; k < 18; k++) {
+      var t = (Date.now() * .0004 + k * .35) % 1;
+      var px = cx + Math.sin(k * 2.1 + t * 6) * (60 + k * 8);
+      var py = cy + 120 - t * 260;
+      var pr = 4 + (k % 4) * 1.6;
+      ctx.globalAlpha = (1 - t) * .8;
+      ctx.fillStyle = BC[k % BC.length];
+      drawHeart(px, py, pr);
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  function drawHeart(x, y, r) {
+    ctx.beginPath();
+    ctx.moveTo(x, y + r * .3);
+    ctx.bezierCurveTo(x, y, x - r, y, x - r, y + r * .3);
+    ctx.bezierCurveTo(x - r, y + r * .7, x, y + r, x, y + r * 1.3);
+    ctx.bezierCurveTo(x, y + r, x + r, y + r * .7, x + r, y + r * .3);
+    ctx.bezierCurveTo(x + r, y, x, y, x, y + r * .3);
+    ctx.fill();
   }
 
   function loop() {
+    if (!ctx) return;
     ctx.clearRect(0, 0, W, H);
     drawStars();
     if (mode === 'petal') drawBokeh();
-    else if (mode === 'butterfly') drawSnow(.02);
+    else if (mode === 'butterfly') drawButterfly();
     else if (mode === 'pollen') drawMeteors(.16);
     else if (mode === 'halo') drawHalo();
     raf = requestAnimationFrame(loop);
@@ -380,7 +473,26 @@ function enterGalaxy() {
 function bindFinaleEvents() {
   document.getElementById('btn-galaxy').onclick = enterGalaxy;
 
-  /* 信件 */
+  /* 花束点击许愿 */
+  var bq = document.querySelector('.bouquet');
+  if (bq) {
+    bq.onclick = function () {
+      if (bq.classList.contains('blowed')) return;
+      bq.classList.add('blowed');
+      var tip = document.querySelector('.blow');
+      if (tip) tip.textContent = '愿望已送达 🌸';
+      var r = bq.getBoundingClientRect();
+      if (window.Fireworks) {
+        Fireworks.burst(r.left + r.width / 2, r.top + r.height / 3);
+      }
+      setTimeout(function () {
+        bq.classList.remove('blowed');
+        if (tip) tip.textContent = '点一下花束，许个愿';
+      }, 3000);
+    };
+  }
+
+  /* 信件一 */
   document.getElementById('btn-letter').onclick = function () {
     document.getElementById('letter-mask').classList.remove('hd');
   };
@@ -388,6 +500,17 @@ function bindFinaleEvents() {
     document.getElementById('letter-mask').classList.add('hd');
   };
   document.getElementById('letter-mask').onclick = function (e) {
+    if (e.target === this) this.classList.add('hd');
+  };
+
+  /* 信件二 */
+  document.getElementById('btn-letter2').onclick = function () {
+    document.getElementById('letter-mask2').classList.remove('hd');
+  };
+  document.querySelector('#letter-mask2 .close').onclick = function () {
+    document.getElementById('letter-mask2').classList.add('hd');
+  };
+  document.getElementById('letter-mask2').onclick = function (e) {
     if (e.target === this) this.classList.add('hd');
   };
 
@@ -400,15 +523,4 @@ function bindFinaleEvents() {
       Galaxy.setMode(this.getAttribute('data-fx'));
     };
   }
-
-  /* 第二封信 */
-  document.getElementById('btn-letter2').onclick = function () {
-    document.getElementById('letter-mask2').classList.remove('hd');
-  };
-  document.querySelector('#letter-mask2 .close').onclick = function () {
-    document.getElementById('letter-mask2').classList.add('hd');
-  };
-  document.getElementById('letter-mask2').onclick = function (e) {
-    if (e.target === this) this.classList.add('hd');
-  };
 }
