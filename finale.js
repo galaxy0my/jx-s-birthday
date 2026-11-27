@@ -1,18 +1,12 @@
 /* ============================================================
-   finale.js  ::  通关后的花海祝福（四段式 · 四种特效）
+   finale.js  ::  通关后祝福（第1段不变 · 花饰蛋糕 · 四种特效）
    ============================================================ */
 
 var BLESSINGS = [
-  '生日快乐，愿所念皆如愿',
-  '愿你眼里有光，心中有爱',
-  '岁岁年年，平安喜乐',
-  '繁花似锦，未来可期',
-  '新的一岁，万事顺意',
-  '愿你被这个世界温柔以待',
-  'Happy birthday！',
-  '愿你如繁花般，热烈而自由',
-  '所行皆坦途，所遇皆美好',
-  '愿你一生努力，一生被爱'
+  '生日快乐', '好运常在', '岁岁皆欢愉', '万事胜意', '前程似锦',
+  '愿你一直闪闪发光', '愿你如星璀璨，如风自由', '今天也要开心呀',
+  '愿你新的一岁，所遇皆温柔，所行皆坦途', '愿你被世界温柔以待',
+  '平安喜乐', '心愿达成', '天天开心', '岁岁平安', 'Happy birthday'
 ];
 
 /* ---------- 入口 ---------- */
@@ -21,18 +15,18 @@ function showFinale() {
   stage.innerHTML =
     '<div class="fin-wrap">' +
 
-    /* 第 1 段 */
+    /* ===== 第1段：爱心弹幕（原样保留） ===== */
     '<div id="scene-heart" class="scene">' +
       '<div id="heart-box"></div>' +
       '<div id="danmaku-box"></div>' +
       '<div class="center-card" id="center-card">' +
-        '<h1>🌸 生日快乐 🌸</h1>' +
-        '<p>每片花瓣都是祝福，随风飘向你</p>' +
-        '<button id="btn-galaxy">走进花海 →</button>' +
+        '<h1>生日快乐 ❤</h1>' +
+        '<p>小寿星祝你天天开心，永远幸福</p>' +
+        '<button id="btn-galaxy">请佳鑫殿下进入星河漫游 →</button>' +
       '</div>' +
     '</div>' +
 
-    /* 第2段：花海 */
+    /* ===== 第2段：花海 ===== */
     '<div id="scene-galaxy" class="scene hd">' +
       '<canvas id="galaxy-cv"></canvas>' +
       '<div class="galaxy-tex">' +
@@ -44,38 +38,48 @@ function showFinale() {
       '</div>' +
     '</div>' +
 
-    /* 花束 */
-    '<div class="cake-stage">' +
-      '<div class="cake bouquet">' +
-        '<div class="bunch">' +
-          '<div class="flower f1"><i class="petal p1"></i><i class="petal p2"></i><i class="petal p3"></i><i class="petal p4"></i><i class="core"></i></div>' +
-          '<div class="flower f2"><i class="petal p1"></i><i class="petal p2"></i><i class="petal p3"></i><i class="petal p4"></i><i class="core"></i></div>' +
-          '<div class="flower f3"><i class="petal p1"></i><i class="petal p2"></i><i class="petal p3"></i><i class="petal p4"></i><i class="core"></i></div>' +
-          '<div class="flower f4"><i class="petal p1"></i><i class="petal p2"></i><i class="petal p3"></i><i class="petal p4"></i><i class="core"></i></div>' +
-          '<div class="flower f5"><i class="petal p1"></i><i class="petal p2"></i><i class="petal p3"></i><i class="petal p4"></i><i class="core"></i></div>' +
-          '<div class="flower f6"><i class="petal p1"></i><i class="petal p2"></i><i class="petal p3"></i><i class="petal p4"></i><i class="core"></i></div>' +
-          '<div class="flower f0"><i class="petal p1"></i><i class="petal p2"></i><i class="petal p3"></i><i class="petal p4"></i><i class="core"></i></div>' +
+    /* ===== 花饰蛋糕 ===== */
+    '<div class="cake-stage hd">' +
+      '<div class="cake flower-cake">' +
+        '<div class="candle"><i class="flame petal-flame"></i></div>' +
+        '<div class="tier t1">' +
+          '<i class="cherry"></i>' +
+          '<i class="mini-flower mf1"></i>' +
+          '<i class="mini-flower mf2"></i>' +
+          '<i class="mini-flower mf3"></i>' +
+          '<i class="leaf lf1"></i>' +
+          '<i class="leaf lf2"></i>' +
         '</div>' +
-        '<div class="stems"><i></i><i></i><i></i><i></i><i></i></div>' +
-        '<div class="wrap w1"></div>' +
-        '<div class="wrap w2"></div>' +
-        '<div class="bow"><i class="l"></i><i class="r"></i><i class="knot"></i></div>' +
+        '<div class="tier t2">' +
+          '<i class="petal-edge e1"></i><i class="petal-edge e2"></i>' +
+          '<i class="petal-edge e3"></i><i class="petal-edge e4"></i>' +
+          '<i class="petal-edge e5"></i><i class="petal-edge e6"></i>' +
+          '<i class="petal-edge e7"></i><i class="petal-edge e8"></i>' +
+        '</div>' +
+        '<div class="tier t3">' +
+          '<i class="vine"></i>' +
+          '<i class="mini-flower mf4"></i>' +
+          '<i class="mini-flower mf5"></i>' +
+          '<i class="leaf lf3"></i>' +
+          '<i class="leaf lf4"></i>' +
+        '</div>' +
+        '<div class="dish"></div>' +
       '</div>' +
       '<div class="ring r1"></div>' +
       '<div class="ring r2"></div>' +
       '<div class="happy">happy birthday</div>' +
-      '<div class="blow">点一下花束，许个愿</div>' +
+      '<div class="blow">点一下蜡烛，许个愿</div>' +
     '</div>' +
 
-    /* 四种特效切换 */
-    '<div class="fx-bar">' +
+    /* ===== 四种特效 ===== */
+    '<div class="fx-bar hd">' +
       '<button class="fx-btn on" data-fx="petal">🌸 落英纷飞</button>' +
       '<button class="fx-btn" data-fx="butterfly">🦋 蝶舞花间</button>' +
       '<button class="fx-btn" data-fx="pollen">✨ 花粉流光</button>' +
       '<button class="fx-btn" data-fx="halo">💗 心形花海</button>' +
     '</div>' +
 
-    /* 第3段：信件一 */
+    /* ===== 信件一 ===== */
     '<div id="letter-mask" class="letter-mask hd">' +
       '<div class="letter">' +
         '<button class="close">×</button>' +
@@ -88,7 +92,7 @@ function showFinale() {
       '</div>' +
     '</div>' +
 
-    /* 第4段：信件二 */
+    /* ===== 信件二 ===== */
     '<div id="letter-mask2" class="letter-mask hd">' +
       '<div class="letter">' +
         '<button class="close">×</button>' +
@@ -108,7 +112,7 @@ function showFinale() {
 }
 
 /* ============================================
-   第1段：花瓣拼成爱心
+   第1段：卡片拼爱心（原样，未改动）
    ============================================ */
 function buildHeart() {
   var box = document.getElementById('heart-box');
@@ -116,7 +120,7 @@ function buildHeart() {
   var H = box.offsetHeight || 340;
   var cx = W / 2, cy = H / 2 - 10;
   var N = 120;
-  var pal = ['#ff9a9e', '#fecfef', '#fbc2eb', '#a6c1ee', '#fdcbf1', '#ffb7c5'];
+  var pal = ['#ffd6e0', '#d6f5d6', '#fff3cd', '#d6e9ff', '#ffe4d6', '#e8d6ff'];
 
   for (var i = 0; i < N; i++) {
     var t = (i / N) * Math.PI * 2;
@@ -135,10 +139,10 @@ function buildHeart() {
   setTimeout(startDanmaku, N * 0.012 * 1000 + 900);
 }
 
-/* ---------- 弹幕 ---------- */
+/* ---------- 弹幕（原样，未改动） ---------- */
 function startDanmaku() {
   var box = document.getElementById('danmaku-box');
-  var pal = ['#ff9a9e', '#fecfef', '#fbc2eb', '#a6c1ee', '#fdcbf1', '#ffb7c5'];
+  var pal = ['#ffd6e0', '#d6f5d6', '#fff3cd', '#d6e9ff', '#ffe4d6', '#e8d6ff'];
   var n = 0;
   var timer = setInterval(function () {
     if (n > 90) { clearInterval(timer); return; }
@@ -149,7 +153,7 @@ function startDanmaku() {
     d.style.top = Math.random() * 80 + '%';
     d.style.transform = 'rotate(' + ((Math.random() * 24) - 12) + 'deg) scale(' + (.7 + Math.random() * .6) + ')';
     d.style.animationDelay = (Math.random() * 6) + 's';
-    d.innerHTML = '🌸 ' + BLESSINGS[Math.floor(Math.random() * BLESSINGS.length)];
+    d.innerHTML = '❤ ' + BLESSINGS[Math.floor(Math.random() * BLESSINGS.length)];
     box.appendChild(d);
     n++;
   }, 90);
@@ -165,7 +169,7 @@ function startDanmaku() {
    ============================================ */
 var Galaxy = (function () {
   var cv, ctx, W, H, raf;
-  var stars = [], bokeh = [], snow = [], halos = [], meteors = [];
+  var stars = [], bokeh = [], butterflies = [], halos = [], meteors = [];
   var BC = ['#ff9a9e', '#fecfef', '#fbc2eb', '#a6c1ee', '#fdcbf1', '#ffb7c5'];
   var mode = 'petal';
 
@@ -176,24 +180,19 @@ var Galaxy = (function () {
     resize();
     addEventListener('resize', resize);
 
-    stars = []; bokeh = []; snow = []; halos = []; meteors = [];
+    stars = []; bokeh = []; butterflies = []; halos = []; meteors = [];
 
-    /* 微光花蕊（背景点缀） */
     for (var i = 0; i < 60; i++) {
       stars.push({
-        x: Math.random() * W,
-        y: Math.random() * H,
+        x: Math.random() * W, y: Math.random() * H,
         r: .4 + Math.random() * 1.2,
         a: .2 + Math.random() * .6,
         d: (Math.random() > .5 ? 1 : -1) * (.004 + Math.random() * .01)
       });
     }
-
-    /* 🌸 落英纷飞：旋转花瓣 */
     for (var j = 0; j < 26; j++) {
       bokeh.push({
-        x: Math.random() * W,
-        y: Math.random() * H,
+        x: Math.random() * W, y: Math.random() * H,
         r: 6 + Math.random() * 10,
         a: .35 + Math.random() * .45,
         vx: (Math.random() - .5) * .6,
@@ -202,24 +201,16 @@ var Galaxy = (function () {
         vr: (Math.random() - .5) * .03
       });
     }
-
-    /* 🦋 蝶舞花间：蝴蝶 */
-    for (var k = 0; k < 12; k++) {
-      snow.push(newButterfly(true));
-    }
-
-    /* 💗 心形花海：光环 */
+    for (var k = 0; k < 12; k++) butterflies.push(newButterfly(true));
     for (var m = 0; m < 4; m++) {
       halos.push({
-        x: Math.random() * W,
-        y: Math.random() * H,
+        x: Math.random() * W, y: Math.random() * H,
         r: 55 + Math.random() * 55,
         sp: .4 + Math.random() * .15,
         rot: Math.random() * 6.28,
         c: BC[m % BC.length]
       });
     }
-
     if (raf) cancelAnimationFrame(raf);
     loop();
   }
@@ -231,7 +222,6 @@ var Galaxy = (function () {
     cv.width = W; cv.height = H;
   }
 
-  /* 蝴蝶数据结构 */
   function newButterfly(anywhere) {
     return {
       x: Math.random() * W,
@@ -240,14 +230,13 @@ var Galaxy = (function () {
       vx: (Math.random() - .5) * 1.2,
       vy: .35 + Math.random() * .55,
       sw: Math.random() * 6.28,
-      ss: .06 + Math.random() * .06,   // 扇翅速度
+      ss: .06 + Math.random() * .06,
       a: .75 + Math.random() * .25,
       c: BC[Math.floor(Math.random() * BC.length)],
       wob: Math.random() * 6.28
     };
   }
 
-  /* --- 背景微光 --- */
   function drawStars() {
     for (var i = 0; i < stars.length; i++) {
       var s = stars[i];
@@ -255,14 +244,12 @@ var Galaxy = (function () {
       if (s.a > 1 || s.a < .15) s.d = -s.d;
       ctx.globalAlpha = Math.abs(s.a) * .8;
       ctx.fillStyle = '#fff';
-      ctx.beginPath();
-      ctx.arc(s.x, s.y, s.r, 0, 6.283);
-      ctx.fill();
+      ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 6.283); ctx.fill();
     }
     ctx.globalAlpha = 1;
   }
 
-  /* --- 🌸 落英纷飞 --- */
+  /* 🌸 落英纷飞 */
   function drawBokeh() {
     for (var i = 0; i < bokeh.length; i++) {
       var b = bokeh[i];
@@ -270,7 +257,6 @@ var Galaxy = (function () {
       if (b.y > H + 40) { b.y = -40; b.x = Math.random() * W; }
       if (b.x > W + 40) b.x = -40;
       if (b.x < -40) b.x = W + 40;
-
       ctx.save();
       ctx.translate(b.x, b.y);
       ctx.rotate(b.rot);
@@ -286,21 +272,17 @@ var Galaxy = (function () {
     ctx.globalAlpha = 1;
   }
 
-  /* --- 🦋 蝶舞花间（真·扇翅） --- */
+  /* 🦋 蝶舞花间 */
   function drawButterfly() {
-    for (var i = 0; i < snow.length; i++) {
-      var s = snow[i];
-      s.sw += s.ss;
-      s.wob += .02;
+    for (var i = 0; i < butterflies.length; i++) {
+      var s = butterflies[i];
+      s.sw += s.ss; s.wob += .02;
       s.x += s.vx + Math.sin(s.wob) * .8;
       s.y += s.vy;
-
       if (s.y > H + 30 || s.x > W + 40 || s.x < -40) {
-        snow[i] = newButterfly(false);
+        butterflies[i] = newButterfly(false);
         continue;
       }
-
-      /* 翅膀开合度：0~1 之间循环 */
       var flap = Math.abs(Math.sin(s.sw));
       var wingW = s.r * 2 * (.25 + flap * .75);
 
@@ -308,7 +290,6 @@ var Galaxy = (function () {
       ctx.translate(s.x, s.y);
       ctx.globalAlpha = s.a;
 
-      /* 左翅 */
       ctx.save();
       ctx.scale(-1, 1);
       var gl = ctx.createLinearGradient(0, 0, wingW, 0);
@@ -319,17 +300,12 @@ var Galaxy = (function () {
       ctx.moveTo(0, 0);
       ctx.quadraticCurveTo(wingW * .6, -s.r * 1.5, wingW, -s.r * .5);
       ctx.quadraticCurveTo(wingW * .8, s.r * .2, 0, s.r * .5);
-      ctx.closePath();
-      ctx.fill();
-      /* 翅斑 */
+      ctx.closePath(); ctx.fill();
       ctx.globalAlpha = s.a * .5;
       ctx.fillStyle = '#fff';
-      ctx.beginPath();
-      ctx.arc(wingW * .55, -s.r * .55, s.r * .22, 0, 6.283);
-      ctx.fill();
+      ctx.beginPath(); ctx.arc(wingW * .55, -s.r * .55, s.r * .22, 0, 6.283); ctx.fill();
       ctx.restore();
 
-      /* 右翅 */
       ctx.globalAlpha = s.a;
       var gr = ctx.createLinearGradient(0, 0, wingW, 0);
       gr.addColorStop(0, s.c);
@@ -339,35 +315,28 @@ var Galaxy = (function () {
       ctx.moveTo(0, 0);
       ctx.quadraticCurveTo(wingW * .6, -s.r * 1.5, wingW, -s.r * .5);
       ctx.quadraticCurveTo(wingW * .8, s.r * .2, 0, s.r * .5);
-      ctx.closePath();
-      ctx.fill();
+      ctx.closePath(); ctx.fill();
       ctx.globalAlpha = s.a * .5;
       ctx.fillStyle = '#fff';
-      ctx.beginPath();
-      ctx.arc(wingW * .55, -s.r * .55, s.r * .22, 0, 6.283);
-      ctx.fill();
+      ctx.beginPath(); ctx.arc(wingW * .55, -s.r * .55, s.r * .22, 0, 6.283); ctx.fill();
 
-      /* 身体 */
       ctx.globalAlpha = s.a;
       ctx.fillStyle = '#6b4f4f';
       ctx.beginPath();
       ctx.ellipse(0, 0, s.r * .16, s.r * .8, 0, 0, 6.283);
       ctx.fill();
-
       ctx.restore();
     }
     ctx.globalAlpha = 1;
   }
 
-  /* --- ✨ 花粉流光 --- */
+  /* ✨ 花粉流光 */
   function drawMeteors(rate) {
     if (Math.random() < rate) {
       meteors.push({
-        x: Math.random() * W,
-        y: Math.random() * H * .85,
+        x: Math.random() * W, y: Math.random() * H * .85,
         len: 80 + Math.random() * 140,
-        sp: 5 + Math.random() * 6,
-        a: 1
+        sp: 5 + Math.random() * 6, a: 1
       });
     }
     for (var i = meteors.length - 1; i >= 0; i--) {
@@ -388,7 +357,7 @@ var Galaxy = (function () {
     ctx.globalAlpha = 1;
   }
 
-  /* --- 💗 心形花海 --- */
+  /* 💗 心形花海 */
   function drawHalo() {
     var cx = W / 2, cy = H / 2;
     for (var i = 0; i < halos.length; i++) {
@@ -411,7 +380,6 @@ var Galaxy = (function () {
       ctx.beginPath(); ctx.arc(0, 0, h.r * .6, 0, 6.283); ctx.stroke();
       ctx.restore();
     }
-    /* 中心光球 */
     var core = ctx.createRadialGradient(cx, cy, 0, cx, cy, 90);
     core.addColorStop(0, 'rgba(255,220,235,.9)');
     core.addColorStop(1, 'transparent');
@@ -419,7 +387,6 @@ var Galaxy = (function () {
     ctx.fillStyle = core;
     ctx.beginPath(); ctx.arc(cx, cy, 90, 0, 6.283); ctx.fill();
 
-    /* 飘浮小爱心 */
     for (var k = 0; k < 18; k++) {
       var t = (Date.now() * .0004 + k * .35) % 1;
       var px = cx + Math.sin(k * 2.1 + t * 6) * (60 + k * 8);
@@ -459,11 +426,16 @@ var Galaxy = (function () {
   };
 })();
 
+/* ---------- 进入花海 ---------- */
 function enterGalaxy() {
   document.getElementById('scene-heart').classList.add('hd');
   var g = document.getElementById('scene-galaxy');
   g.classList.remove('hd');
   g.classList.add('galaxy-in');
+  var cs = document.querySelector('.cake-stage');
+  var fb = document.querySelector('.fx-bar');
+  if (cs) cs.classList.remove('hd');
+  if (fb) fb.classList.remove('hd');
   Galaxy.init();
 }
 
@@ -473,21 +445,24 @@ function enterGalaxy() {
 function bindFinaleEvents() {
   document.getElementById('btn-galaxy').onclick = enterGalaxy;
 
-  /* 花束点击许愿 */
-  var bq = document.querySelector('.bouquet');
-  if (bq) {
-    bq.onclick = function () {
-      if (bq.classList.contains('blowed')) return;
-      bq.classList.add('blowed');
+  /* 蜡烛点击许愿 */
+  var candle = document.querySelector('.candle');
+  var cake = document.querySelector('.flower-cake');
+  if (candle && cake) {
+    candle.onclick = function () {
+      if (cake.classList.contains('blowed')) return;
+      cake.classList.add('blowed');
       var tip = document.querySelector('.blow');
       if (tip) tip.textContent = '愿望已送达 🌸';
-      var r = bq.getBoundingClientRect();
-      if (window.Fireworks) {
-        Fireworks.burst(r.left + r.width / 2, r.top + r.height / 3);
+      var mfs = cake.querySelectorAll('.mini-flower');
+      for (var i = 0; i < mfs.length; i++) {
+        mfs[i].style.setProperty('--sx', ((Math.random() - .5) * 120) + 'px');
       }
+      var r = cake.getBoundingClientRect();
+      if (window.Fireworks) Fireworks.burst(r.left + r.width / 2, r.top + r.height / 3);
       setTimeout(function () {
-        bq.classList.remove('blowed');
-        if (tip) tip.textContent = '点一下花束，许个愿';
+        cake.classList.remove('blowed');
+        if (tip) tip.textContent = '点一下蜡烛，许个愿';
       }, 3000);
     };
   }
