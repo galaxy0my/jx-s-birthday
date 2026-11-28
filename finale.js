@@ -110,6 +110,7 @@ function showFinale() {
   buildHeart();
   bindFinaleEvents();
 }
+
 /* ============================================
    第1段：卡片汇聚成爱心
    ============================================ */
@@ -400,47 +401,6 @@ var Galaxy = (function () {
     }
     ctx.globalAlpha = 1;
   }
-
-  function drawHeart(x, y, r) {
-    ctx.beginPath();
-    ctx.moveTo(x, y + r * .3);
-    ctx.bezierCurveTo(x, y, x - r, y, x - r, y + r * .3);
-    ctx.bezierCurveTo(x - r, y + r * .7, x, y + r, x, y + r * 1.3);
-    ctx.bezierCurveTo(x, y + r, x + r, y + r * .7, x + r, y + r * .3);
-    ctx.bezierCurveTo(x + r, y, x, y, x, y + r * .3);
-    ctx.fill();
-  }
-
-  function loop() {
-    if (!ctx) return;
-    ctx.clearRect(0, 0, W, H);
-    drawStars();
-    if (mode === 'petal') drawBokeh();
-    else if (mode === 'butterfly') drawButterfly();
-    else if (mode === 'pollen') drawMeteors(.16);
-    else if (mode === 'halo') drawHalo();
-    raf = requestAnimationFrame(loop);
-  }
-
-  return {
-    init: init,
-    setMode: function (m) { mode = m; }
-  };
-})();
-
-/* ---------- 进入花海 ---------- */
-function enterGalaxy() {
-  document.getElementById('scene-heart').classList.add('hd');
-  var g = document.getElementById('scene-galaxy');
-  g.classList.remove('hd');
-  g.classList.add('galaxy-in');
-  var cs = document.querySelector('.cake-stage');
-  var fb = document.querySelector('.fx-bar');
-  if (cs) cs.classList.remove('hd');
-  if (fb) fb.classList.remove('hd');
-  Galaxy.init();
-}
-
 /* ============================================
    事件绑定
    ============================================ */
@@ -481,43 +441,34 @@ function bindFinaleEvents() {
     }, 3000);
   });
 
-/* ============================================
-   事件绑定
-   ============================================ */
-function bindFinaleEvents(){
-  document.getElementById('btn-galaxy').onclick = enterGalaxy;
+  /* 第一封信：打开 */
+  on('btn-letter', function () {
+    var m = document.getElementById('letter-mask');
+    if (m) m.classList.remove('hd');
+  });
 
-  document.getElementById('btn-letter').onclick = function(){
-    document.getElementById('letter-mask').classList.remove('hd');
-  };
-  document.querySelector('#letter-mask .close').onclick = function(){
-    document.getElementById('letter-mask').classList.add('hd');
-  };
-  document.getElementById('letter-mask').onclick = function(e){
-    if(e.target.id==='letter-mask')
-      document.getElementById('letter-mask').classList.add('hd');
-  };
+  /* 第二封信：打开 */
+  on('btn-letter2', function () {
+    var m = document.getElementById('letter-mask2');
+    if (m) m.classList.remove('hd');
+  });
 
-  // 特效切换
+  /* 关闭信件：点 × 或点遮罩空白处 */
+  document.querySelectorAll('.letter-mask').forEach(function (m) {
+    m.addEventListener('click', function (e) {
+      if (e.target === m || e.target.classList.contains('close')) {
+        m.classList.add('hd');
+      }
+    });
+  });
+
+  /* 特效切换 */
   var btns = document.querySelectorAll('.fx-btn');
-  for(var i=0;i<btns.length;i++){
-    btns[i].onclick = function(){
-      for(var j=0;j<btns.length;j++) btns[j].classList.remove('on');
+  for (var i = 0; i < btns.length; i++) {
+    btns[i].onclick = function () {
+      for (var j = 0; j < btns.length; j++) btns[j].classList.remove('on');
       this.classList.add('on');
       Galaxy.setMode(this.getAttribute('data-fx'));
     };
   }
-   
-  // 第二封信
-  document.getElementById('btn-letter2').onclick = function(){
-    document.getElementById('letter-mask2').classList.remove('hd');
-  };
-  document.querySelector('#letter-mask2 .close2').onclick = function(){
-    document.getElementById('letter-mask2').classList.add('hd');
-  };
-  document.getElementById('letter-mask2').onclick = function(e){
-    if(e.target.id==='letter-mask2')
-      document.getElementById('letter-mask2').classList.add('hd');
-  };
-
 }
