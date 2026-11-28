@@ -27,7 +27,7 @@ function showFinale() {
 
     '<div id="scene-galaxy" class="scene hd">' +
       '<canvas id="galaxy-cv"></canvas>' +
-      '<div class="galaxy-tex">' +
+      '<div class="galaxy-text">' +
         '<div class="en">A FIELD OF FLOWERS, JUST FOR YOU</div>' +
         '<h1>把整个春天都送给你</h1>' +
         '<p>点下面的按钮，换一种花看</p>' +
