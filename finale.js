@@ -394,14 +394,14 @@ var Galaxy = (function () {
     }
     ctx.globalAlpha = 1;
   }
-
   function drawHeart(x, y, r) {
     ctx.beginPath();
-    ctx.moveTo(x, y + r * .3);
-    ctx.bezierCurveTo(x, y, x - r, y, x - r, y + r * .3);
-    ctx.bezierCurveTo(x - r, y + r * .7, x, y + r, x, y + r * 1.3);
-    ctx.bezierCurveTo(x, y + r, x + r, y + r * .7, x + r, y + r * .3);
-    ctx.bezierCurveTo(x + r, y, x + r, x, x + r * .3);
+    ctx.moveTo(x, y + r * 0.3);
+    ctx.bezierCurveTo(x, y, x - r, y, x - r, y + r * 0.3);
+    ctx.bezierCurveTo(x - r, y + r * 0.7, x, y + r * 0.7, x, y + r * 1.3);
+    ctx.bezierCurveTo(x, y + r * 0.7, x + r, y + r * 0.7, x + r, y + r * 0.3);
+    ctx.bezierCurveTo(x + r, y, x, y, x, y + r * 0.3);
+    ctx.closePath();
     ctx.fill();
   }
 
