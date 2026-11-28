@@ -212,7 +212,7 @@ function renderResult() {
   html += '<div class="q" style="color:#8b949e;font-size:.9em">';
   html += '愿你也如「圆恙」二字 —— 圆满，无恙。';
   html += '</div>';
-  html += '<button onclick="goFinal()">进入搭子环节 ▶</button>';
+  html += '<button onclick="goFinal()">请进入花海 ▶</button>';
   html += '<button class="fx-btn" style="width:100%;margin-top:10px" onclick="restartQuiz()">重新作答</button>';
   html += '</div>';
 
@@ -244,7 +244,7 @@ function goFinal() {
     var fn = window[FINALE_NAMES[i]];
     if (typeof fn === "function") { fn(); return; }
   }
-  alert("未找到搭子环节的启动函数。\n请在 puzzle.js 顶部的 FINALE_NAMES 数组里，把 finale.js 中真实的函数名填到第一位。");
+  alert("未找到进入花海环节的启动函数。\n请在 puzzle.js 顶部的 FINALE_NAMES 数组里，把 finale.js 中真实的函数名填到第一位。");
 }
 
 /* ---------- 暴露给 HTML 的 onclick ---------- */
