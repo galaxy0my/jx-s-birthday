@@ -413,6 +413,7 @@ var Galaxy = (function () {
     else if (mode === 'butterfly') drawButterfly();
     else if (mode === 'pollen') drawMeteors(.16);
     else if (mode === 'halo') drawHalo();
+    else if (mode === 'heart') drawHalo();
     raf = requestAnimationFrame(loop);
   }
 
