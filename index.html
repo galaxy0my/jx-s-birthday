@@ -602,6 +602,32 @@ window.addEventListener('load', boot);
 setTimeout(boot, 500);
 setTimeout(boot, 1500);
 setTimeout(boot, 3000);
+/* 让按钮层浮在最上面 */
+.fx-bar {
+  position: relative;
+  z-index: 99999 !important;
+  pointer-events: auto !important;
+}
+
+.fx-bar button {
+  position: relative;
+  z-index: 99999 !important;
+  pointer-events: auto !important;
+}
+
+/* canvas 不拦截点击 */
+#galaxy-cv {
+  pointer-events: none !important;
+}
+
+/* ===== 探测：谁挡住了按钮 ===== */
+setTimeout(function() {
+  var b = document.getElementById('btn-letter');
+  if (!b) { alert('按钮不存在'); return; }
+  var r = b.getBoundingClientRect();
+  var el = document.elementFromPoint(r.left + r.width/2, r.top + r.height/2);
+  alert('挡住按钮的是：' + el.tagName + ' / class=' + el.className + ' / id=' + el.id);
+}, 4000);
 
 </script>
 </body>
