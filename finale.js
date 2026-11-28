@@ -486,6 +486,17 @@ function bindFinaleEvents() {
     var m = document.getElementById('letter-mask2');
     if (m) m.classList.remove('hd');
   });
+  /* 平板触摸兼容 */
+  ['btn-letter', 'btn-letter2'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) {
+      el.addEventListener('touchend', function(e) {
+        e.preventDefault();
+        var m = document.getElementById('letter-mask');
+        if (m) m.classList.remove('hd');
+      });
+    }
+  });
 
   /* 关闭信件：点 × 或点遮罩空白处 */
   var masks = document.querySelectorAll('.letter-mask');
