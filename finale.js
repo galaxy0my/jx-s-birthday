@@ -1,5 +1,5 @@
 /* ============================================================
-   finale.js  ::  通关后祝福（第1段不变 · 花饰蛋糕 · 四种特效）
+   finale.js  ::  通关后祝福（爱心弹幕 · 花海 · 花饰蛋糕 · 四种特效）
    ============================================================ */
 
 var BLESSINGS = [
@@ -15,7 +15,6 @@ function showFinale() {
   stage.innerHTML =
     '<div class="fin-wrap">' +
 
-    /* ===== 第1段：爱心弹幕（原样保留） ===== */
     '<div id="scene-heart" class="scene">' +
       '<div id="heart-box"></div>' +
       '<div id="danmaku-box"></div>' +
@@ -26,7 +25,6 @@ function showFinale() {
       '</div>' +
     '</div>' +
 
-    /* ===== 第2段：花海 ===== */
     '<div id="scene-galaxy" class="scene hd">' +
       '<canvas id="galaxy-cv"></canvas>' +
       '<div class="galaxy-tex">' +
@@ -38,7 +36,6 @@ function showFinale() {
       '</div>' +
     '</div>' +
 
-    /* ===== 花饰蛋糕 ===== */
     '<div class="cake-stage hd">' +
       '<div class="cake flower-cake">' +
         '<div class="candle"><i class="flame petal-flame"></i></div>' +
@@ -71,7 +68,6 @@ function showFinale() {
       '<div class="blow">点一下蜡烛，许个愿</div>' +
     '</div>' +
 
-    /* ===== 四种特效 ===== */
     '<div class="fx-bar hd">' +
       '<button class="fx-btn on" data-fx="petal">🌸 落英纷飞</button>' +
       '<button class="fx-btn" data-fx="butterfly">🦋 蝶舞花间</button>' +
@@ -79,7 +75,6 @@ function showFinale() {
       '<button class="fx-btn" data-fx="halo">💗 心形花海</button>' +
     '</div>' +
 
-    /* ===== 信件一 ===== */
     '<div id="letter-mask" class="letter-mask hd">' +
       '<div class="letter">' +
         '<button class="close">×</button>' +
@@ -92,7 +87,6 @@ function showFinale() {
       '</div>' +
     '</div>' +
 
-    /* ===== 信件二 ===== */
     '<div id="letter-mask2" class="letter-mask hd">' +
       '<div class="letter">' +
         '<button class="close">×</button>' +
@@ -166,7 +160,6 @@ function startDanmaku(){
     document.getElementById('center-card').classList.add('show');
   }, 1200);
 }
-
 /* ============================================
    第2段：花海 · 四种特效
    ============================================ */
@@ -401,11 +394,51 @@ var Galaxy = (function () {
     }
     ctx.globalAlpha = 1;
   }
+
+  function drawHeart(x, y, r) {
+    ctx.beginPath();
+    ctx.moveTo(x, y + r * .3);
+    ctx.bezierCurveTo(x, y, x - r, y, x - r, y + r * .3);
+    ctx.bezierCurveTo(x - r, y + r * .7, x, y + r, x, y + r * 1.3);
+    ctx.bezierCurveTo(x, y + r, x + r, y + r * .7, x + r, y + r * .3);
+    ctx.bezierCurveTo(x + r, y, x + r, x, x + r * .3);
+    ctx.fill();
+  }
+
+  function loop() {
+    if (!ctx) return;
+    ctx.clearRect(0, 0, W, H);
+    drawStars();
+    if (mode === 'petal') drawBokeh();
+    else if (mode === 'butterfly') drawButterfly();
+    else if (mode === 'pollen') drawMeteors(.16);
+    else if (mode === 'halo') drawHalo();
+    raf = requestAnimationFrame(loop);
+  }
+
+  return {
+    init: init,
+    setMode: function (m) { mode = m; }
+  };
+})();
+
+/* ---------- 进入花海 ---------- */
+function enterGalaxy() {
+  document.getElementById('scene-heart').classList.add('hd');
+  var g = document.getElementById('scene-galaxy');
+  g.classList.remove('hd');
+  g.classList.add('galaxy-in');
+  var cs = document.querySelector('.cake-stage');
+  var fb = document.querySelector('.fx-bar');
+  if (cs) cs.classList.remove('hd');
+  if (fb) fb.classList.remove('hd');
+  Galaxy.init();
+}
+
 /* ============================================
-   事件绑定
+   事件绑定（全文件唯一一份）
    ============================================ */
 function bindFinaleEvents() {
-  /* 工具函数：安全绑定 */
   function on(id, fn) {
     var el = document.getElementById(id);
     if (el) { el.onclick = fn; }
@@ -454,19 +487,22 @@ function bindFinaleEvents() {
   });
 
   /* 关闭信件：点 × 或点遮罩空白处 */
-  document.querySelectorAll('.letter-mask').forEach(function (m) {
-    m.addEventListener('click', function (e) {
-      if (e.target === m || e.target.classList.contains('close')) {
-        m.classList.add('hd');
-      }
-    });
-  });
+  var masks = document.querySelectorAll('.letter-mask');
+  for (var i = 0; i < masks.length; i++) {
+    (function (m) {
+      m.addEventListener('click', function (e) {
+        if (e.target === m || e.target.classList.contains('close')) {
+          m.classList.add('hd');
+        }
+      });
+    })(masks[i]);
+  }
 
   /* 特效切换 */
   var btns = document.querySelectorAll('.fx-btn');
-  for (var i = 0; i < btns.length; i++) {
-    btns[i].onclick = function () {
-      for (var j = 0; j < btns.length; j++) btns[j].classList.remove('on');
+  for (var j = 0; j < btns.length; j++) {
+    btns[j].onclick = function () {
+      for (var k = 0; k < btns.length; k++) btns[k].classList.remove('on');
       this.classList.add('on');
       Galaxy.setMode(this.getAttribute('data-fx'));
     };
