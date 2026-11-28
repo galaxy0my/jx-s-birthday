@@ -468,10 +468,7 @@ function bindFinaleEvents() {
     if (window.Fireworks) {
       var r = cake.getBoundingClientRect();
       Fireworks.burst(r.left + r.width / 2, r.top + r.height / 3);
-      alert('烟花已触发');
-    } else {
-      alert('Fireworks 没加载');
-    }
+    } 
 
     setTimeout(function () {
       cake.classList.remove('blowed');
