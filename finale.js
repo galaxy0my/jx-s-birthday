@@ -520,3 +520,16 @@ function bindFinaleEvents() {
     };
   }
 }
+/* ===== 信件按钮兜底绑定 ===== */
+document.addEventListener('click', function(e) {
+  var t = e.target;
+  if (t && (t.id === 'btn-letter' || t.id === 'btn-letter2')) {
+    var m = document.getElementById('letter-mask');
+    if (m) m.classList.remove('hd');
+  }
+  if (t && (t.id === 'letter-mask' || t.classList.contains('close'))) {
+    var m2 = document.getElementById('letter-mask');
+    if (m2) m2.classList.add('hd');
+  }
+});
+
