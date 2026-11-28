@@ -481,40 +481,43 @@ function bindFinaleEvents() {
     }, 3000);
   });
 
-  /* 信件一 */
-  on('btn-letter', function () {
-    var m = document.getElementById('letter-mask');
-    if (m) m.classList.remove('hd');
-  });
-  onQ('#letter-mask .close', function () {
-    var m = document.getElementById('letter-mask');
-    if (m) m.classList.add('hd');
-  });
-  on('letter-mask', function (e) {
-    if (e.target === this) this.classList.add('hd');
-  });
+/* ============================================
+   事件绑定
+   ============================================ */
+function bindFinaleEvents(){
+  document.getElementById('btn-galaxy').onclick = enterGalaxy;
 
-  /* 信件二 */
-  on('btn-letter2', function () {
-    var m = document.getElementById('letter-mask2');
-    if (m) m.classList.remove('hd');
-  });
-  onQ('#letter-mask2 .close', function () {
-    var m = document.getElementById('letter-mask2');
-    if (m) m.classList.add('hd');
-  });
-  on('letter-mask2', function (e) {
-    if (e.target === this) this.classList.add('hd');
-  });
+  document.getElementById('btn-letter').onclick = function(){
+    document.getElementById('letter-mask').classList.remove('hd');
+  };
+  document.querySelector('#letter-mask .close').onclick = function(){
+    document.getElementById('letter-mask').classList.add('hd');
+  };
+  document.getElementById('letter-mask').onclick = function(e){
+    if(e.target.id==='letter-mask')
+      document.getElementById('letter-mask').classList.add('hd');
+  };
 
-  /* 特效切换 */
+  // 特效切换
   var btns = document.querySelectorAll('.fx-btn');
-  for (var i = 0; i < btns.length; i++) {
-    btns[i].onclick = function () {
-      for (var j = 0; j < btns.length; j++) btns[j].classList.remove('on');
+  for(var i=0;i<btns.length;i++){
+    btns[i].onclick = function(){
+      for(var j=0;j<btns.length;j++) btns[j].classList.remove('on');
       this.classList.add('on');
-      if (window.Galaxy) Galaxy.setMode(this.getAttribute('data-fx'));
+      Galaxy.setMode(this.getAttribute('data-fx'));
     };
   }
-}
+   
+  // 第二封信
+  document.getElementById('btn-letter2').onclick = function(){
+    document.getElementById('letter-mask2').classList.remove('hd');
+  };
+  document.querySelector('#letter-mask2 .close2').onclick = function(){
+    document.getElementById('letter-mask2').classList.add('hd');
+  };
+  document.getElementById('letter-mask2').onclick = function(e){
+    if(e.target.id==='letter-mask2')
+      document.getElementById('letter-mask2').classList.add('hd');
+  };
 
+}
