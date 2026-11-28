@@ -429,6 +429,54 @@ button:hover{box-shadow:0 6px 20px rgba(46,160,67,.35)}
   font-style:italic;
 }
 
+.letter-mask{
+  position: fixed;
+  inset: 0;
+  background: rgba(20,10,30,.75);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+}
+.letter-mask.hd{ display: none; }
+.letter{
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  max-height: 80vh;
+  overflow-y: auto;
+  background: linear-gradient(160deg,#fff8f0,#fff0f5);
+  border-radius: 18px;
+  padding: 34px 28px 28px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.4);
+  color: #5a4a52;
+  line-height: 1.9;
+  font-size: 15px;
+}
+.letter h3{
+  margin: 0 0 18px;
+  font-size: 20px;
+  color: #d16a8a;
+  text-align: center;
+  letter-spacing: 2px;
+}
+.letter .close{
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(209,106,138,.15);
+  color: #d16a8a;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+
 </style>
 
 </head>
