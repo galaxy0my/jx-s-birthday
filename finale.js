@@ -532,4 +532,9 @@ document.addEventListener('click', function(e) {
     if (m2) m2.classList.add('hd');
   }
 });
+document.addEventListener('click', function(e) {
+  if (e.target.id === 'btn-letter' || e.target.id === 'btn-letter2') {
+    alert('点到了！');
+  }
+});
 
